@@ -65,7 +65,23 @@ async def on_message(message):
     await bot.process_commands(message)
 
 # ========== features ==========
+👑 Creator: `!god`, `!bow`, `!respect`, `!creator`, `!legend`
 
+@bot.command() async def god(ctx): await ctx.send("My creator is **Ansh** 👑")
+
+
+
+    @bot.command() async def bow(ctx): await ctx.send("🛐 Bow before the legend — **Ansh** has entered.")
+
+
+    @bot.command() async def respect(ctx): await ctx.send("Respect isn't given, it's earned. Ansh owns it.")
+
+
+    @bot.command() async def creator(ctx): await ctx.send("My creator? None other than **Ansh** 🧠")
+
+
+    @bot.command() async def legend(ctx): await ctx.send("Stories are told about **Ansh** in the binary realm.")
+        
 # Server rules list
 SERVER_RULES = """
 📜 **Server Rules**
