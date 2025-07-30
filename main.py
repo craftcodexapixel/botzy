@@ -65,8 +65,7 @@ async def on_message(message):
     await bot.process_commands(message)
 
 # ========== features ==========
-👑 Creator:
-`!god`, `!bow`, `!respect`, `!creator`, `!legend`
+** 👑Creator: `!god`, `!bow`, `!respect`, `!creator`, `!legend` **
 
 @bot.command()
 async def god(ctx):
