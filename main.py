@@ -18,7 +18,8 @@ STATUS_MESSAGE = "Chatting with legends 👑"
 @bot.event
 async def on_ready():
     print(f"✅ Logged in as {bot.user}")
-    await bot.change_presence(activity=discord.Game(name=STATUS_MESSAGE))
+    await client.change_presence(activity=discord.Streaming(name="My Stream", url="https://discord.gg/WdghMcR9 󠁛󠀣󠀰󠀰󠀰󠀰󠀰󠀰󠀬󠀣󠀴󠀴󠀰󠀸󠀰󠀸󠁝"))
+
 
 @bot.event
 async def on_message(message):
@@ -65,7 +66,7 @@ async def on_message(message):
     await bot.process_commands(message)
 
 # ========== features ==========
-** 👑Creator: `!god`, `!bow`, `!respect`, `!creator`, `!legend` **
+#** 👑Creator: `!god`, `!bow`, `!respect`, `!creator`, `!legend` **
 
 @bot.command()
 async def god(ctx):
