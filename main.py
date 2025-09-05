@@ -18,7 +18,7 @@ STATUS_MESSAGE = "Chatting with legends 👑"
 @bot.event
 async def on_ready():
     print(f"✅ Logged in as {bot.user}")
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=STATUS_MESSAGE))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=STATUS_MESSAGE))
     
     # Sync slash commands
     try:
