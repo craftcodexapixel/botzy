@@ -18,7 +18,7 @@ STATUS_MESSAGE = "Chatting with legends 👑"
 @bot.event
 async def on_ready():
     print(f"✅ Logged in as {bot.user}")
-    await client.change_presence(activity=discord.Streaming(name="My Stream", url="https://discord.gg/WdghMcR9 󠁛󠀣󠀰󠀰󠀰󠀰󠀰󠀰󠀬󠀣󠀴󠀴󠀰󠀸󠀰󠀸󠁝"))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=" Chatting with legends 👑"))
 
 
 @bot.event
@@ -28,6 +28,17 @@ async def on_message(message):
 
     content = message.content.lower()
     author = message.author
+
+    # 🚫 Detect @everyone misuse
+    if "@everyone" in content:
+        if not any(role.permissions.administrator for role in message.author.roles):
+            await message.delete()
+            await message.channel.send(f"🚫 {message.author.mention}, you're not allowed to use @everyone.")
+            return
+
+    # 🌍 Enforce English only
+    if any(word in content for word in SUS_MESSAGES):
+        await message.channel.send(f"🌐 {message.author.mention}, please speak English in this server.")
 
     # --- Abusive Word Check ---
     if any(word in content for word in abusive_words):
@@ -66,29 +77,7 @@ async def on_message(message):
     await bot.process_commands(message)
 
 # ========== features ==========
-#** 👑Creator: `!god`, `!bow`, `!respect`, `!creator`, `!legend` **
 
-@bot.command()
-async def god(ctx):
-    await ctx.send("My creator is **Ansh** 👑")
-
-@bot.command()
-async def bow(ctx):
-    await ctx.send("🛐 Bow before the legend — **Ansh** has entered.")
-
-@bot.command()
-async def respect(ctx):
-    await ctx.send("Respect isn't given, it's earned. Ansh owns it.")
-
-@bot.command()
-async def creator(ctx):
-    await ctx.send("My creator? None other than **Ansh** 🧠")
-
-@bot.command()
-async def legend(ctx):
-    await ctx.send("Stories are told about **Ansh** in the binary realm.")
-
-        
 # Server rules list
 SERVER_RULES = """
 📜 **Server Rules**
@@ -114,27 +103,6 @@ SUS_MESSAGES = [
 async def rules(ctx):
     await ctx.send(SERVER_RULES)
 
-@bot.event
-async def on_message(message):
-    if message.author.bot:
-        return
-
-    content = message.content.lower()
-
-    # 🚫 Detect @everyone misuse
-    if "@everyone" in content:
-        if not any(role.permissions.administrator for role in message.author.roles):
-            await message.delete()
-            await message.channel.send(f"🚫 {message.author.mention}, you're not allowed to use @everyone.")
-            return
-
-    # 🌍 Enforce English only
-    if any(word in content for word in SUS_MESSAGES):
-        await message.channel.send(f"🌐 {message.author.mention}, please speak English in this server.")
-
-    # Spam & abusive logic stays as before...
-
-    await bot.process_commands(message)
 
 
 # ========== Commands ==========
