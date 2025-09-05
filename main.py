@@ -57,6 +57,11 @@ async def on_message(message):
     if bot.user in message.mentions:
         await message.channel.send("👋 Yes? You called me? I'm ready!")
 
+    # Slash command: /slayer
+@bot.tree.command(name="slayer", description="Replies with a slaying message!")
+async def slayer(interaction: discord.Interaction):
+    await interaction.response.send_message("Hello, let's slay the game...")
+
     # --- Anti-spam ---
     user_msgs = spam_tracker[author.id]
     user_msgs.append(content)
