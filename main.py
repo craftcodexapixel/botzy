@@ -18,7 +18,23 @@ STATUS_MESSAGE = "Chatting with legends 👑"
 @bot.event
 async def on_ready():
     print(f"✅ Logged in as {bot.user}")
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=" Chatting with legends 👑"))
+    await bot.change_presence(activity=discord.Streaming(name="My Stream", url="https://discord.gg/WdghMcR9"))
+    
+    # Sync slash commands
+    try:
+        synced = await bot.tree.sync()
+        print(f"✅ Synced {len(synced)} slash commands globally")
+        
+        # Also try syncing to all guilds the bot is in
+        for guild in bot.guilds:
+            try:
+                synced_guild = await bot.tree.sync(guild=guild)
+                print(f"✅ Synced {len(synced_guild)} slash commands to {guild.name}")
+            except Exception as guild_e:
+                print(f"❌ Failed to sync to {guild.name}: {guild_e}")
+                
+    except Exception as e:
+        print(f"❌ Failed to sync slash commands: {e}")
 
 
 @bot.event
@@ -56,11 +72,6 @@ async def on_message(message):
     # --- Mention reply ---
     if bot.user in message.mentions:
         await message.channel.send("👋 Yes? You called me? I'm ready!")
-
-    # Slash command: /slayer
-@bot.tree.command(name="slayer", description="Replies with a slaying message!")
-async def slayer(interaction: discord.Interaction):
-    await interaction.response.send_message("Hello, let's slay the game...")
 
     # --- Anti-spam ---
     user_msgs = spam_tracker[author.id]
@@ -175,6 +186,36 @@ async def on_member_join(member):
     except discord.Forbidden:
         pass
 
+
+# ========== Slash Commands ==========
+
+@bot.tree.command(name="ping", description="Check bot latency")
+async def slash_ping(interaction: discord.Interaction):
+    latency = round(bot.latency * 1000)
+    await interaction.response.send_message(f"🏓 Pong! Latency is `{latency}ms`")
+
+@bot.tree.command(name="helloslay", description="Say hello slay")
+async def slash_helloslay(interaction: discord.Interaction):
+    await interaction.response.send_message("Hello Slay! 💅✨")
+
+@bot.tree.command(name="slayer", description="Let's slay the game together")
+async def slash_slayer(interaction: discord.Interaction):
+    await interaction.response.send_message("Hello, Let's Slay the game together")
+
+# Manual sync command for debugging
+@bot.command()
+async def sync(ctx):
+    if ctx.author.id == ctx.guild.owner.id:  # Only server owner can use this
+        try:
+            synced = await bot.tree.sync()
+            await ctx.send(f"✅ Synced {len(synced)} slash commands globally!")
+            
+            synced_guild = await bot.tree.sync(guild=ctx.guild)
+            await ctx.send(f"✅ Synced {len(synced_guild)} slash commands to this server!")
+        except Exception as e:
+            await ctx.send(f"❌ Failed to sync: {e}")
+    else:
+        await ctx.send("❌ Only the server owner can use this command.")
 
 # ========== Run the Bot ==========
 keep_alive()
